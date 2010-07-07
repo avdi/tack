@@ -1,7 +1,7 @@
 module Tack
 
   class TestSet
-    
+
     def initialize(adapter=nil)
       @adapter = adapter
     end
@@ -18,14 +18,15 @@ module Tack
 
       files.inject([]) { |tests, file|
         adapter = @adapter || Adapters::Adapter.for(file)
-        tests += adapter.tests_for(file).select  do |_, contexts, description| 
+        tests += adapter.tests_for(file).select  do |_, contexts, description|
+          description = description.to_s
           contexts = Array(contexts)
           description.match(pattern) || contexts.any? {|x| x.match(pattern)}
         end
       }
     end
 
-    private 
+    private
 
     def valid_test_file?(path)
       return false if File.directory?(path)
